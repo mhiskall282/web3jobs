@@ -4,7 +4,7 @@ import { Home } from './pages/Home';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
-import { FreelancerDashboard } from './pages/dashboard/FreelancerDashboard';
+//import { FreelancerDashboard } from './pages/dashboard/FreelancerDashboard';
 import { ClientDashboard } from './pages/dashboard/ClientDashboard';
 import { JobListings } from './pages/jobs/JobListings';
 import { JobPost } from './pages/jobs/JobPost';
