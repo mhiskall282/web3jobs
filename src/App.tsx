@@ -10,12 +10,12 @@ import { JobListings } from './pages/jobs/JobListings';
 import { JobPost } from './pages/jobs/JobPost';
 //import { FreelancerProfile } from './pages/profile/FreelancerProfile'; // Ensure this file exists at the specified path or correct the path
 // If the file does not exist, create it at './pages/profile/FreelancerProfile.tsx'
-// import { Escrow } from './pages/Escrow';
-// import { LearningHub } from './pages/LearningHub';
-// import { Governance } from './pages/Governance';
-// import { Messages } from './pages/Messages';
-// import { Wallet } from './pages/Wallet';
-// import { Settings } from './pages/Settings';
+import { Escrow } from './pages/Escrow';
+import { LearningHub } from './pages/LearningHub';
+import { Governance } from './pages/Governance';
+import { Messages } from './pages/Messages';
+import { Wallet } from './pages/Wallet';
+import { Settings } from './pages/Settings';
 // import { About } from './pages/About';
 // import { Terms } from './pages/Terms';
 import { ProtectedRoute } from './components/ProtectedRoute';
