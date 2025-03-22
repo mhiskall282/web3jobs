@@ -5,7 +5,7 @@ export const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      {/* <nav className="bg-secondary-light py-4">
+      <nav className="bg-secondary-light py-4">
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-2">
             <GlobeAfrica className="w-8 h-8 text-primary" />
@@ -21,7 +21,7 @@ export const Home = () => {
             <button className="btn-primary">Sign Up</button>
           </div>
         </div>
-      </nav> */}
+      </nav>
 
       {/* Hero Section */}
       <section className="relative bg-secondary-light">
