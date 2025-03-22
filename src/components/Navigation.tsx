@@ -26,9 +26,9 @@ export const Navigation = () => {
           <Link to="/jobs" className="text-gray-300 hover:text-primary transition-colors">Jobs</Link>
           <Link to="/learning-hub" className="text-gray-300 hover:text-primary transition-colors">Learning Hub</Link>
           <Link to="/governance" className="text-gray-300 hover:text-primary transition-colors">Governance</Link>
-           <a href="#features" className="text-gray-300 hover:text-primary transition-colors">Features</a>
+{/*            <a href="#features" className="text-gray-300 hover:text-primary transition-colors">Features</a>
             <a href="#how-it-works" className="text-gray-300 hover:text-primary transition-colors">How it Works</a>
-            <a href="#testimonials" className="text-gray-300 hover:text-primary transition-colors">Testimonials</a>
+            <a href="#testimonials" className="text-gray-300 hover:text-primary transition-colors">Testimonials</a> */}
         </div>
 
         <div className="hidden md:flex items-center gap-4">
