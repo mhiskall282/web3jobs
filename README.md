@@ -35,7 +35,7 @@ web3jobs/
 
 ### 1. Clone the repository and install root dependencies:
 ```bash
-git clone <repository-url>
+git clone https://github.com/mhiskall282/web3jobs.git
 cd web3jobs
 npm install
 ```
