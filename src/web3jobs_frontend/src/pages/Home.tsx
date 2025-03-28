@@ -1,8 +1,22 @@
 // import React from 'react';
 import { Globe as Briefcase, Shield, Users } from 'lucide-react';
 // GlobeAfrica,
+// import { useAuth } from '../../context/AuthContext';
+// import { Login } from '../components/Login';
+// import { RoleSelection } from '../components/RoleSelection';
 
 export const Home = () => {
+
+  // const { isAuthenticated, userRole } = useAuth();
+  // // , logout
+  // if (!isAuthenticated) {
+  //   return <Login />;
+  // }
+
+  // if (!userRole) {
+  //   return <RoleSelection />;
+  // }
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -32,16 +46,28 @@ export const Home = () => {
               <span className="text-primary">Empowering</span> African Talent in the Web3 Space
             </h1>
             <p className="text-lg text-gray-400">
-              Connect with top African talent and opportunities in blockchain, DeFi, and Web3 development. 
+              Connect with top African talent and opportunities in blockchain, DeFi, and Web3 development.
               Secure, transparent, and powered by blockchain technology.
             </p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <button className="btn-primary">Find Talent</button>
               <button className="btn-secondary">Post a Job</button>
-            </div>
+            </div> */}
+
+            {/* for internet identity */}
+            {/* <div className="flex gap-4">
+              {userRole === 'freelancer' ? (
+                <button className="btn-primary">Find Jobs</button>
+              ) : (
+                <button className="btn-primary">Find Talent</button>
+              )}
+              <button className="btn-secondary">
+                {userRole === 'freelancer' ? 'My Profile' : 'Post a Job'}
+              </button>
+            </div> */}
           </div>
           <div className="flex-1">
-            <img 
+            <img
               src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
               alt="African professionals collaborating"
               className="rounded-lg shadow-2xl"

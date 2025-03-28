@@ -1,17 +1,23 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Globe as GlobeAfrica, Menu, X, Bell } from 'lucide-react';
-import { useAuthStore } from '../lib/store';
+// import { useAuthStore } from '../lib/store';
 import { cn } from '../lib/utils';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, userRole, login, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/');
+  };
+
+  const handleLogin = async () => {
+    await login();
+    // No need to navigate - the AuthContext will handle showing the role selection if needed
   };
 
   return (
@@ -26,13 +32,13 @@ export const Navigation = () => {
           <Link to="jobs" className="text-gray-300 hover:text-primary transition-colors">Jobs</Link>
           <Link to="learning-hub" className="text-gray-300 hover:text-primary transition-colors">Learning Hub</Link>
           <Link to="governance" className="text-gray-300 hover:text-primary transition-colors">Governance</Link>
-{/*            <a href="#features" className="text-gray-300 hover:text-primary transition-colors">Features</a>
+          {/*            <a href="#features" className="text-gray-300 hover:text-primary transition-colors">Features</a>
             <a href="#how-it-works" className="text-gray-300 hover:text-primary transition-colors">How it Works</a>
             <a href="#testimonials" className="text-gray-300 hover:text-primary transition-colors">Testimonials</a> */}
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          {isAuthenticated ? (
+          {/* {isAuthenticated ? (
             <>
               <Link to="/messages" className="relative">
                 <Bell className="w-6 h-6 text-gray-300 hover:text-primary transition-colors" />
@@ -55,10 +61,34 @@ export const Navigation = () => {
               <Link to="login" className="btn-secondary">Log In</Link>
               <Link to="register" className="btn-primary">Sign Up</Link>
             </>
+          )} */}
+          {isAuthenticated ? (
+            <>
+              <Link to="/messages" className="relative">
+                <Bell className="w-6 h-6 text-gray-300 hover:text-primary transition-colors" />
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent-red rounded-full text-xs flex items-center justify-center">
+                  3
+                </span>
+              </Link>
+              <Link
+                to={userRole === 'freelancer' ? '/freelancer-dashboard' : '/recruiter-dashboard'}
+                className="text-gray-300 hover:text-primary transition-colors"
+              >
+                Dashboard
+              </Link>
+              <button onClick={handleLogout} className="btn-secondary">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleLogin} className="btn-secondary">Log In</button>
+              {/* Internet Identity doesn't have a separate signup process */}
+            </>
           )}
         </div>
 
-        <button 
+        <button
           className="md:hidden"
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -79,10 +109,10 @@ export const Navigation = () => {
           <Link to="jobs" className="text-gray-300 hover:text-primary transition-colors">Jobs</Link>
           <Link to="learning-hub" className="text-gray-300 hover:text-primary transition-colors">Learning Hub</Link>
           <Link to="governance" className="text-gray-300 hover:text-primary transition-colors">Governance</Link>
-          
-          {isAuthenticated ? (
+
+          {/* {isAuthenticated ? (
             <>
-              <Link 
+              <Link
                 to={user?.role === 'freelancer' ? '/freelancer-dashboard' : '/client-dashboard'}
                 className="text-gray-300 hover:text-primary transition-colors"
               >
@@ -96,6 +126,30 @@ export const Navigation = () => {
             <>
               <Link to="login" className="btn-secondary w-full text-center">Log In</Link>
               <Link to="register" className="btn-primary w-full text-center">Sign Up</Link>
+            </>
+          )} */}
+          {isAuthenticated ? (
+            <>
+              <Link to="/messages" className="relative">
+                <Bell className="w-6 h-6 text-gray-300 hover:text-primary transition-colors" />
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent-red rounded-full text-xs flex items-center justify-center">
+                  3
+                </span>
+              </Link>
+              <Link
+                to={userRole === 'freelancer' ? '/freelancer-dashboard' : '/recruiter-dashboard'}
+                className="text-gray-300 hover:text-primary transition-colors"
+              >
+                Dashboard
+              </Link>
+              <button onClick={handleLogout} className="btn-secondary">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleLogin} className="btn-secondary">Log In</button>
+              {/* Internet Identity doesn't have a separate signup process */}
             </>
           )}
         </div>
