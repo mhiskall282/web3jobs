@@ -1,31 +1,56 @@
-import { useState } from 'react';
-import { web3jobs_backend } from 'declarations/web3jobs_backend';
 
-function App() {
-  const [greeting, setGreeting] = useState('');
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
+import LandingPage from './pages/LandingPage';
+import ProfileCreation from './pages/ProfileCreation';
+import FreelancerDashboard from './pages/FreelancerDashboard';
+import RecruiterDashboard from './pages/RecruiterDashboard';
+import { LearningHub } from './pages/LearningHub';
+import { Governance } from './pages/Governance';
+import ProfileView from './components/ProfileView';
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    web3jobs_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
-
+const App = () => {
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <AuthProvider>
+        <Routes>
+          {/* Public Routes without Layout */}
+          {/* <Route path="/login" element={<LoginPage />} /> */}
+          {/* <Route path="/register" element={<RegisterPage />} /> */}
+          {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} /> */}
+          
+          {/* Main Layout Wrapper */}
+          <Route element={<Layout />}>
+            {/* Public Routes within Layout */}
+            <Route path="/" element={<LandingPage />} />
+            
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/create-profile" element={<ProfileCreation />} />
+              {/* <Route path="/messages" element={<Messages />} /> */}
+              <Route path="/profile" element={<ProfileView />} />
+              <Route path="/learning" element={<LearningHub />} />
+              <Route path="/governance" element={<Governance />} />
+            </Route>
+
+            {/* Role-Specific Protected Routes */}
+            <Route element={<ProtectedRoute requireProfile roleType="#Freelancer" />}>
+              <Route path="/freelancer/*" element={<FreelancerDashboard />} />
+            </Route>
+
+            <Route element={<ProtectedRoute requireProfile roleType="#Recruiter" />}>
+              <Route path="/recruiter/*" element={<RecruiterDashboard />} />
+              {/* <Route path="/post-job" element={<PostJobPage />} /> */}
+            </Route>
+
+            {/* Fallback Route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
