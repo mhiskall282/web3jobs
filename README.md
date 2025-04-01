@@ -3,7 +3,7 @@
 
 Worka is a decentralized job platform built on the Internet Computer. This project consists of:
 
-# Live Link: 
+# Live Link: https://4yoni-hyaaa-aaaao-a4dea-cai.icp0.io
 
 - **Backend**: Internet Computer canisters written in Motoko
 - **Frontend**: A React app powered by Vite
