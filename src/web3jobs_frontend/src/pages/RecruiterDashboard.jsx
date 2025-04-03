@@ -14,12 +14,11 @@ const RecruiterDashboard = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Keep existing useEffect hooks and logic unchanged
   useEffect(() => {
     // Check if user has a complete profile
     const checkProfile = async () => {
       if (!userProfile) {
-        navigate('/profile-setup');
+        navigate('/create-profile');
         return;
       }
       
@@ -201,7 +200,7 @@ const RecruiterDashboard = () => {
                   <ProfileForm 
                     backendActor={backendActor} 
                     initialData={userProfile} 
-                    userRole="#Recruiter" 
+                    userRole="Recruiter" 
                   />
                 ) : (
                   <ProfileView 

@@ -8,6 +8,7 @@ import Time "mo:base/Time";
 import Nat "mo:base/Nat";
 import Hash "mo:base/Hash";
 import Nat32 "mo:base/Nat32";
+import Debug "mo:base/Debug";
 
 
 actor AfroTalent {
@@ -22,8 +23,7 @@ actor AfroTalent {
   name : Text;
   email : Text;
   role : UserRole;
-  bio : Text;
-  image : Text; 
+  bio : Text; 
   isComplete : Bool;
   createdAt : Int;
   
@@ -75,15 +75,28 @@ actor AfroTalent {
   email : Text,
   role : UserRole,
   bio : Text,
-  image : Text,
   skills : ?[Text],
   portfolioLink : ?Text,
   hourlyRate : ?Float,
   companyName : ?Text,
   companyWebsite : ?Text,
   hiringBudget : ?Float
-) : async Bool {
+): async Bool {
   let caller = msg.caller;
+
+  Debug.print("Creating profile for: " # Principal.toText(caller));
+  Debug.print("Profile data: {");
+  Debug.print("  name: " # name);
+  Debug.print("  email: " # email);
+  Debug.print("  role: " # debug_show(role));
+  Debug.print("  bio: " # bio);
+  Debug.print("  skills: " # debug_show(skills));
+  Debug.print("  portfolioLink: " # debug_show(portfolioLink));
+  Debug.print("  hourlyRate: " # debug_show(hourlyRate));
+  Debug.print("  companyName: " # debug_show(companyName));
+  Debug.print("  companyWebsite: " # debug_show(companyWebsite));
+  Debug.print("  hiringBudget: " # debug_show(hiringBudget));
+  Debug.print("}");
   
   let profile : UserProfile = {
     principal = caller;
@@ -91,7 +104,6 @@ actor AfroTalent {
     email = email;
     role = role;
     bio = bio;
-    image = image;
     isComplete = name.size() > 0 and email.size() > 0 and bio.size() > 0;
     createdAt = Time.now();
     
@@ -105,6 +117,18 @@ actor AfroTalent {
   };
   
   userProfiles.put(caller, profile);
+  // Verify storage
+  let stored = userProfiles.get(caller);
+  switch (stored) {
+    case (?p) {
+      Debug.print("Successfully stored profile for: " # Principal.toText(caller));
+      Debug.print("Stored profile: " # debug_show(p));
+    };
+    case null {
+      Debug.print("ERROR: Profile not stored for: " # Principal.toText(caller));
+    };
+  };
+  
   true;
 };
 

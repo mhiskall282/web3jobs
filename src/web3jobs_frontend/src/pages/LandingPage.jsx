@@ -10,19 +10,30 @@ const LandingPage = () => {
   const { isAuthenticated, isLoading, login, userProfile } = useAuth();
   const navigate = useNavigate();
   
+  // useEffect(() => {
+  //   // If user is authenticated and has a profile, redirect to appropriate dashboard
+  //   if (isAuthenticated && userProfile) {
+  //     if (userProfile.role === "Freelancer") {
+  //       navigate('/freelancer-dashboard');
+  //     } else if (userProfile.role === "Recruiter") {
+  //       navigate('/recruiter-dashboard');
+  //     }
+  //   } else if (isAuthenticated && !userProfile) {
+  //     // If authenticated but no profile, redirect to profile creation
+  //     navigate('/create-profile');
+  //   }
+  // }, [isAuthenticated, userProfile, navigate]);
   useEffect(() => {
-    // If user is authenticated and has a profile, redirect to appropriate dashboard
+    // Only redirect if authenticated and has a profile
     if (isAuthenticated && userProfile) {
-      if (userProfile.role === "#Freelancer") {
+      if (userProfile.role === "Freelancer") {
         navigate('/freelancer-dashboard');
-      } else if (userProfile.role === "#Recruiter") {
+      } else if (userProfile.role === "Recruiter") {
         navigate('/recruiter-dashboard');
       }
-    } else if (isAuthenticated && !userProfile) {
-      // If authenticated but no profile, redirect to profile creation
-      navigate('/create-profile');
     }
   }, [isAuthenticated, userProfile, navigate]);
+  
   
   if (isLoading) {
     return <LoadingScreen />;
@@ -67,7 +78,7 @@ const LandingPage = () => {
               Start Earning
             </button>
             <button
-              onClick={() => navigate('/discover')}
+              onClick={login}
               className="border-2 border-gold hover:bg-gold/10 text-gold font-bold py-4 px-8 rounded-lg transition-all"
             >
               Hire Talent

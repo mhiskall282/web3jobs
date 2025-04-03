@@ -4,7 +4,14 @@ import { useAuth } from '../context/AuthContext';
 // import ImageUploader from './ImageUploader';
 
 const ProfileCreation = () => {
-  const { backendActor, setUserProfile } = useAuth();
+
+  const convertMotokoRole = (roleObject) => {
+    if (roleObject?.hasOwnProperty('Freelancer')) return 'Freelancer';
+    if (roleObject?.hasOwnProperty('Recruiter')) return 'Recruiter';
+    return null;
+  };
+  
+  const { backendActor, setUserProfile, unwrapOptional, refreshProfile } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -80,6 +87,100 @@ const ProfileCreation = () => {
   //   }
   // };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateForm()) return;
+  
+  //   setIsSubmitting(true);
+  //   try {
+  //     const roleVariant = formData.role === 'Freelancer' 
+  //       ? { Freelancer: null } 
+  //       : { Recruiter: null };
+  
+  //     // Format optional values correctly for Candid
+  //     const success = await backendActor.createProfile(
+  //       formData.name,
+  //       formData.email,
+  //       roleVariant,
+  //       formData.bio,
+  //       "", // image
+  //       formData.role === 'freelancer' ? [formData.skills.split(',').map(s => s.trim())] : [], // skills as opt array
+  //       formData.role === 'freelancer' ? [formData.portfolioLink] : [], // portfolioLink as opt text
+  //       formData.role === 'freelancer' ? [parseFloat(formData.hourlyRate)] : [], // hourlyRate as opt float
+  //       formData.role === 'recruiter' ? [formData.companyName] : [], // companyName as opt text
+  //       formData.role === 'recruiter' ? [formData.companyWebsite] : [], // companyWebsite as opt text
+  //       formData.role === 'recruiter' ? [parseFloat(formData.hiringBudget)] : [] // hiringBudget as opt float
+  //     );
+  
+  //     if (success) {
+  //       const profileResult = await backendActor.getProfile();
+        
+  //       // Handle the optional return type correctly
+  //       if (Array.isArray(profileResult) && profileResult.length > 0) {
+  //         const profile = profileResult[0];
+  //         setUserProfile(profile);
+  //         navigate(profile.role.hasOwnProperty('Freelancer') ? '/freelancer-dashboard' : '/recruiter-dashboard');
+  //       } else {
+  //         setErrors({ submit: "Profile created but couldn't retrieve it" });
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Profile creation error:", error);
+  //     setErrors({ submit: error.message || "Failed to create profile" });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateForm()) return;
+  
+  //   setIsSubmitting(true);
+  //   try {
+  //     const roleVariant = formData.role === 'freelancer' 
+  //       ? { Freelancer: null } 
+  //       : { Recruiter: null };
+  
+  //     const skillsArray = formData.skills.split(',').map(s => s.trim());
+  
+  //     const success = await backendActor.createProfile(
+  //       formData.name,
+  //       formData.email,
+  //       roleVariant,
+  //       formData.bio,
+  //       [skillsArray],     // ?[Text] (skills)
+  //       [formData.portfolioLink],  // ?Text
+  //       [parseFloat(formData.hourlyRate)], // ?Float
+  //       [formData.companyName],    // ?Text
+  //       [formData.companyWebsite], // ?Text
+  //       [parseFloat(formData.hiringBudget)] // ?Float
+  //     );
+  
+  //     if (success) {
+  //       const profileResult = await backendActor.getProfile();
+  //       const rawProfile = unwrapOptional(profileResult);
+        
+  //       if (rawProfile) {
+  //         const processedProfile = {
+  //           ...rawProfile,
+  //           role: convertMotokoRole(rawProfile.role)
+  //         };
+  //         setUserProfile(processedProfile);
+  //         navigate(processedProfile.role === 'Freelancer' 
+  //           ? '/freelancer-dashboard' 
+  //           : '/recruiter-dashboard');
+  //       } else {
+  //         throw new Error("Profile creation failed");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     setErrors({ submit: error.message });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -90,43 +191,64 @@ const ProfileCreation = () => {
         ? { Freelancer: null } 
         : { Recruiter: null };
   
-      // Format optional values correctly for Candid
+      const skillsArray = formData.skills.split(',').map(s => s.trim());
+  
+      console.log('Submitting profile with data:', {
+        ...formData,
+        roleVariant,
+        skillsArray
+      });
+  
       const success = await backendActor.createProfile(
         formData.name,
         formData.email,
         roleVariant,
         formData.bio,
-        "", // image
-        formData.role === 'freelancer' ? [formData.skills.split(',').map(s => s.trim())] : [], // skills as opt array
-        formData.role === 'freelancer' ? [formData.portfolioLink] : [], // portfolioLink as opt text
-        formData.role === 'freelancer' ? [parseFloat(formData.hourlyRate)] : [], // hourlyRate as opt float
-        formData.role === 'recruiter' ? [formData.companyName] : [], // companyName as opt text
-        formData.role === 'recruiter' ? [formData.companyWebsite] : [], // companyWebsite as opt text
-        formData.role === 'recruiter' ? [parseFloat(formData.hiringBudget)] : [] // hiringBudget as opt float
+        [skillsArray],     // ?[Text]
+        [formData.portfolioLink],  // ?Text
+        [parseFloat(formData.hourlyRate)], // ?Float
+        [formData.companyName],    // ?Text
+        [formData.companyWebsite], // ?Text
+        [parseFloat(formData.hiringBudget)] // ?Float
       );
+  
+      console.log('Profile creation success:', success);
   
       if (success) {
         const profileResult = await backendActor.getProfile();
+        console.log('Raw profile result:', profileResult);
         
-        // Handle the optional return type correctly
-        if (Array.isArray(profileResult) && profileResult.length > 0) {
-          const profile = profileResult[0];
-          setUserProfile(profile);
-          navigate(profile.role.hasOwnProperty('Freelancer') ? '/freelancer-dashboard' : '/recruiter-dashboard');
+        const rawProfile = unwrapOptional(profileResult);
+        console.log('Unwrapped profile:', rawProfile);
+  
+        if (rawProfile) {
+          const processedProfile = {
+            ...rawProfile,
+            role: convertMotokoRole(rawProfile.role),
+            isComplete: rawProfile.isComplete
+          };
+          console.log('Processed profile:', processedProfile);
+          
+          setUserProfile(processedProfile);
+          await refreshProfile();
+          
+          navigate(processedProfile.role === 'Freelancer' 
+            ? '/freelancer-dashboard' 
+            : '/recruiter-dashboard');
         } else {
-          setErrors({ submit: "Profile created but couldn't retrieve it" });
+          throw new Error("Profile creation failed - no profile returned");
         }
       }
     } catch (error) {
-      console.error("Profile creation error:", error);
-      setErrors({ submit: error.message || "Failed to create profile" });
+      console.error('Profile creation error:', error);
+      setErrors({ submit: error.message.replace(/Rejection code:.*/gi, '') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-black text-gold">
       <div className="container mx-auto px-4 max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-8">Complete Your Profile</h1>
         

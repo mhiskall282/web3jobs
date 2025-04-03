@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { createAuthClient, login, logout, createBackendWithIdentity } from '../services/authService';
-
+import { useNavigate } from 'react-router-dom';
 const AuthContext = createContext(null);
+
+const convertMotokoRole = (roleObject) => {
+  if (roleObject?.hasOwnProperty('Freelancer')) return 'Freelancer';
+  if (roleObject?.hasOwnProperty('Recruiter')) return 'Recruiter';
+  return null;
+};
 
 export const AuthProvider = ({ children }) => {
   const [authClient, setAuthClient] = useState(null);
@@ -11,129 +17,99 @@ export const AuthProvider = ({ children }) => {
   const [backendActor, setBackendActor] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Use a ref to track initialization
+  const navigate = useNavigate();
   const isInitialized = useRef(false);
 
-  // Helper function to unwrap optional values from Candid
   const unwrapOptional = (optionalValue) => {
-    if (Array.isArray(optionalValue) && optionalValue.length > 0) {
-      return optionalValue[0];
-    }
+    if (Array.isArray(optionalValue) && optionalValue.length > 0) return optionalValue[0];
     return null;
   };
 
-  // Initialize auth client
+  const fetchUserProfile = async (actor) => {
+    try {
+      const profileResult = await actor.getProfile();
+      const rawProfile = unwrapOptional(profileResult);
+
+      if (!rawProfile) {
+        setUserProfile(null);
+        return null;
+      }
+
+      const processedProfile = {
+        ...rawProfile,
+        role: convertMotokoRole(rawProfile.role)
+      };
+      setUserProfile(processedProfile);
+      return processedProfile;
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     const init = async () => {
       if (isInitialized.current) return;
       isInitialized.current = true;
-      
+
       try {
-        console.log("Initializing auth client...");
         const client = await createAuthClient();
         setAuthClient(client);
-        
         const isLoggedIn = await client.isAuthenticated();
-        console.log("Is authenticated:", isLoggedIn);
         setIsAuthenticated(isLoggedIn);
-        
+
         if (isLoggedIn) {
           const identity = client.getIdentity();
           setIdentity(identity);
           setPrincipal(identity.getPrincipal());
-          
-          try {
-            console.log("Creating backend actor...");
-            const actor = await createBackendWithIdentity(client);
-            setBackendActor(actor);
-            
-            // Verify actor has getProfile method
-            if (actor && typeof actor.getProfile === 'function') {
-              console.log("Fetching user profile...");
-              try {
-                const profileResult = await actor.getProfile();
-                console.log("Profile received:", profileResult);
-                
-                // Handle the optional type correctly
-                const profile = unwrapOptional(profileResult);
-                setUserProfile(profile);
-              } catch (profileError) {
-                console.error("Error fetching profile:", profileError);
-              }
-            } else {
-              console.error("Actor missing getProfile method");
-            }
-          } catch (actorError) {
-            console.error("Error creating actor:", actorError);
-          }
+
+          const actor = await createBackendWithIdentity(client);
+          setBackendActor(actor);
+
+          const profile = await fetchUserProfile(actor);
+          if (!profile) navigate('/create-profile');
         }
-        
-        setIsLoading(false);
       } catch (error) {
-        console.error("Error initializing auth:", error);
+        console.error("Initialization error:", error);
+      } finally {
         setIsLoading(false);
       }
     };
-    
     init();
-  }, []);
-  
-  // Login function
+  }, [navigate]);
+
   const handleLogin = async () => {
-    if (!authClient) {
-      console.error("Auth client not initialized");
-      return;
-    }
-    
+    if (!authClient) return;
+
     await login(authClient, async () => {
-      console.log("Login successful");
       setIsAuthenticated(true);
       const identity = authClient.getIdentity();
       setIdentity(identity);
       setPrincipal(identity.getPrincipal());
-      
+
       try {
-        console.log("Creating backend actor after login...");
         const actor = await createBackendWithIdentity(authClient);
         setBackendActor(actor);
-        
-        // Verify actor has getProfile method
-        if (actor && typeof actor.getProfile === 'function') {
-          console.log("Fetching user profile after login...");
-          try {
-            const profileResult = await actor.getProfile();
-            console.log("Profile received after login:", profileResult);
-            
-            // Handle the optional type correctly
-            const profile = unwrapOptional(profileResult);
-            setUserProfile(profile);
-          } catch (profileError) {
-            console.error("Error fetching profile after login:", profileError);
-          }
+        const profile = await fetchUserProfile(actor);
+
+        if (!profile) {
+          navigate('/create-profile');
         } else {
-          console.error("Actor missing getProfile method after login");
-          
-          // Debug: Try calling whoami to verify authentication
-          if (actor && typeof actor.whoami === 'function') {
-            try {
-              const principal = await actor.whoami();
-              console.log("Whoami result:", principal.toString());
-            } catch (whoamiError) {
-              console.error("Error calling whoami:", whoamiError);
-            }
-          }
+          navigate(profile.role === 'Freelancer'
+            ? '/freelancer-dashboard'
+            : '/recruiter-dashboard');
         }
-      } catch (actorError) {
-        console.error("Error creating actor after login:", actorError);
+      } catch (error) {
+        console.error("Post-login error:", error);
+        navigate('/create-profile');
       }
     });
   };
-  
+
   // Logout function
   const handleLogout = async () => {
     if (!authClient) return;
-    
+
     await logout(authClient);
     setIsAuthenticated(false);
     setIdentity(null);
@@ -141,24 +117,59 @@ export const AuthProvider = ({ children }) => {
     setBackendActor(null);
     setUserProfile(null);
   };
-  
+
   // Profile refresh function
+  // const refreshProfile = async () => {
+  //   if (!backendActor || typeof backendActor.getProfile !== 'function') {
+  //     console.error("Cannot refresh profile: actor or getProfile method not available");
+  //     return;
+  //   }
+
+  //   try {
+  //     const profileResult = await backendActor.getProfile();
+  //     // Handle the optional type correctly and convert role
+  //     const profile = unwrapOptional(profileResult);
+  //     if (profile) {
+  //       profile.role = convertMotokoRole(profile.role);
+  //     }
+  //     setUserProfile(profile);
+  //   } catch (error) {
+  //     console.error("Error refreshing profile:", error);
+  //   }
+  // };
   const refreshProfile = async () => {
-    if (!backendActor || typeof backendActor.getProfile !== 'function') {
-      console.error("Cannot refresh profile: actor or getProfile method not available");
+    if (!backendActor) {
+      console.error("No backend actor available");
       return;
     }
-    
+  
     try {
+      console.log("Refreshing profile...");
       const profileResult = await backendActor.getProfile();
-      // Handle the optional type correctly
-      const profile = unwrapOptional(profileResult);
-      setUserProfile(profile);
+      console.log("Raw profile result:", profileResult);
+      
+      const rawProfile = unwrapOptional(profileResult);
+      console.log("Unwrapped profile:", rawProfile);
+  
+      if (rawProfile) {
+        const processedProfile = {
+          ...rawProfile,
+          role: convertMotokoRole(rawProfile.role),
+          isComplete: rawProfile.isComplete
+        };
+        console.log("Setting processed profile:", processedProfile);
+        setUserProfile(processedProfile);
+        return processedProfile;
+      }
+      return null;
     } catch (error) {
-      console.error("Error refreshing profile:", error);
+      console.error("Profile refresh error:", error);
+      throw error;
     }
   };
   
+
+
   const value = {
     authClient,
     isAuthenticated,
@@ -171,9 +182,10 @@ export const AuthProvider = ({ children }) => {
     logout: handleLogout,
     refreshProfile,
     setUserProfile,
-    unwrapOptional // Export the helper function for use in other components
+    unwrapOptional,
+    convertMotokoRole,
   };
-  
+
   return (
     <AuthContext.Provider value={value}>
       {children}

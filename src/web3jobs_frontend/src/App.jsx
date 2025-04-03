@@ -15,40 +15,36 @@ import ProfileView from './components/ProfileView';
 const App = () => {
   return (
     <AuthProvider>
-        <Routes>
-          {/* Public Routes without Layout */}
-          {/* <Route path="/login" element={<LoginPage />} /> */}
-          {/* <Route path="/register" element={<RegisterPage />} /> */}
-          {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} /> */}
+      <Routes>
+        <Route element={<Layout />}>
+          {/* Public routes */}
+          <Route path="/" element={<LandingPage />} />
           
-          {/* Main Layout Wrapper */}
-          <Route element={<Layout />}>
-            {/* Public Routes within Layout */}
-            <Route path="/" element={<LandingPage />} />
+          {/* Authenticated routes */}
+          {/* <Route element={<ProtectedRoute />}> */}
+            <Route path="/create-profile" element={<ProfileCreation />} />
+            <Route path="/learning" element={<LearningHub />} />
+            <Route path="/governance" element={<Governance />} />
+          {/* </Route> */}
+
+          {/* Profile-complete routes */}
+          {/* <Route element={<ProtectedRoute requireProfile />}> */}
+            <Route path="/profile" element={<ProfileView />} />
             
-            {/* Protected Routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/create-profile" element={<ProfileCreation />} />
-              {/* <Route path="/messages" element={<Messages />} /> */}
-              <Route path="/profile" element={<ProfileView />} />
-              <Route path="/learning" element={<LearningHub />} />
-              <Route path="/governance" element={<Governance />} />
-            </Route>
+            {/* Role-specific routes */}
+            {/* <Route element={<ProtectedRoute roleType="Freelancer" />}> */}
+              <Route path="/freelancer-dashboard/*" element={<FreelancerDashboard />} />
+            {/* </Route> */}
 
-            {/* Role-Specific Protected Routes */}
-            <Route element={<ProtectedRoute requireProfile roleType="#Freelancer" />}>
-              <Route path="/freelancer/*" element={<FreelancerDashboard />} />
-            </Route>
+            {/* <Route element={<ProtectedRoute roleType="Recruiter" />}> */}
+              <Route path="/recruiter-dashboard/*" element={<RecruiterDashboard />} />
+            {/* </Route> */}
+          {/* </Route> */}
 
-            <Route element={<ProtectedRoute requireProfile roleType="#Recruiter" />}>
-              <Route path="/recruiter/*" element={<RecruiterDashboard />} />
-              {/* <Route path="/post-job" element={<PostJobPage />} /> */}
-            </Route>
-
-            {/* Fallback Route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
+          {/* Fallback route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
     </AuthProvider>
   );
 };

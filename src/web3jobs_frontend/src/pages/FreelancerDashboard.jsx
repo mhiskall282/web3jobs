@@ -18,7 +18,7 @@ const FreelancerDashboard = () => {
     // Check if user has a complete profile
     const checkProfile = async () => {
       if (!userProfile) {
-        navigate('/profile-setup');
+        navigate('/create-profile');
         return;
       }
       
@@ -80,7 +80,7 @@ const FreelancerDashboard = () => {
   return (
     <div className="min-h-screen bg-black text-gold">
       {/* Enhanced Navigation */}
-      <nav className="bg-gray-900 border-b border-gold/20 py-4">
+      {/* <nav className="bg-gray-900 border-b border-gold/20 py-4">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <Link to="/" className="text-xl font-bold bg-gradient-to-r from-gold to-orange-500 bg-clip-text text-transparent">
             AfroTalent
@@ -103,7 +103,7 @@ const FreelancerDashboard = () => {
             </button>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Stats Grid */}
@@ -165,7 +165,7 @@ const FreelancerDashboard = () => {
                   <ProfileForm 
                     backendActor={backendActor} 
                     initialData={userProfile} 
-                    userRole="#Freelancer" 
+                    userRole="Freelancer" 
                   />
                 ) : (
                   <ProfileView 
@@ -179,7 +179,7 @@ const FreelancerDashboard = () => {
                 <ProfileForm 
                   backendActor={backendActor} 
                   initialData={userProfile} 
-                  userRole="#Freelancer" 
+                  userRole="Freelancer" 
                   isEditing={true} 
                 />
               } />

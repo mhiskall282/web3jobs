@@ -6,7 +6,8 @@ import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { isAuthenticated, userRole, hasProfile, logout, login } = useAuth();
+    const { isAuthenticated, userProfile, logout, login } = useAuth(); // Changed from userRole
+    const userRole = userProfile?.role || null;
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -18,12 +19,14 @@ const Navbar = () => {
         { name: 'Dashboard', path: '/freelancer-dashboard' },
         { name: 'Find Jobs', path: '/jobs' },
         { name: 'My Applications', path: '/applications' },
+        {name: 'Profile', path: '/freelancer-dashboard/profile'},
     ];
 
     const recruiterLinks = [
         { name: 'Dashboard', path: '/recruiter-dashboard' },
         { name: 'Post Job', path: '/post-job' },
         { name: 'My Listings', path: '/listings' },
+        {name: 'Profile', path: '/recruiter-dashboard/profile'}
     ];
 
     const commonLinks = [
@@ -92,7 +95,7 @@ const Navbar = () => {
                     <div className="hidden md:flex items-center space-x-6">
                         {isAuthenticated ? (
                             <>
-                                <button className="relative text-gray-300 hover:text-gold">
+                                {/* <button className="relative text-gray-300 hover:text-gold">
                                     <Bell className="w-6 h-6" />
                                     <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">
                                         3
@@ -105,7 +108,7 @@ const Navbar = () => {
                                 >
                                     <span className="mr-2">My Profile</span>
                                     <Users className="w-5 h-5" />
-                                </Link>
+                                </Link> */}
 
                                 <button
                                     onClick={handleLogout}
