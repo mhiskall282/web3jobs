@@ -75,13 +75,15 @@ const JobListings = ({ jobs, isLoading, backendActor }) => {
         </div>
       )}
       
-      {jobs.length === 0 ? (
+      {/* ONLY CHANGE: Added optional chaining */}
+      {(jobs?.length === 0) ? (
         <div className="text-center py-8 bg-gray-900 rounded-xl">
           <p className="text-gray-300">No opportunities available</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
-          {jobs.map(job => (
+          {/* ONLY CHANGE: Added optional chaining */}
+          {jobs?.map(job => (
             <div key={job.id} className="bg-gray-900 rounded-xl border border-gold/20 p-6">
               <h2 className="text-xl font-semibold text-gold mb-2">{job.title}</h2>
               <p className="text-gray-300 mb-4">{job.description}</p>
@@ -155,6 +157,11 @@ const JobListings = ({ jobs, isLoading, backendActor }) => {
       )}
     </div>
   );
+};
+
+// ONLY ADDITION: Default props to prevent undefined errors
+JobListings.defaultProps = {
+  jobs: []
 };
 
 export default JobListings;

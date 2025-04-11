@@ -10,7 +10,7 @@
       },
       "type": "custom",
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
-    },
+  },
     "web3jobs_backend": {
       "main": "src/web3jobs_backend/main.mo",
       "type": "motoko"
