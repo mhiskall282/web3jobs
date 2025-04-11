@@ -11,6 +11,9 @@ import RecruiterDashboard from './pages/RecruiterDashboard';
 import { LearningHub } from './pages/LearningHub';
 import { Governance } from './pages/Governance';
 import ProfileView from './components/ProfileView';
+import { Escrow } from './pages/Escrow';
+import JobListings from './components/JobListings';
+import CreateJobListing from './components/CreateJobListing';
 
 const App = () => {
   return (
@@ -25,6 +28,7 @@ const App = () => {
             <Route path="/create-profile" element={<ProfileCreation />} />
             <Route path="/learning" element={<LearningHub />} />
             <Route path="/governance" element={<Governance />} />
+            <Route path='/escrow' element={<Escrow/>} />
           {/* </Route> */}
 
           {/* Profile-complete routes */}
@@ -34,10 +38,12 @@ const App = () => {
             {/* Role-specific routes */}
             {/* <Route element={<ProtectedRoute roleType="Freelancer" />}> */}
               <Route path="/freelancer-dashboard/*" element={<FreelancerDashboard />} />
+              <Route path='/jobs' element={<JobListings />} />
             {/* </Route> */}
 
             {/* <Route element={<ProtectedRoute roleType="Recruiter" />}> */}
               <Route path="/recruiter-dashboard/*" element={<RecruiterDashboard />} />
+              <Route path='/post-jobs' element={<CreateJobListing />} />
             {/* </Route> */}
           {/* </Route> */}
 

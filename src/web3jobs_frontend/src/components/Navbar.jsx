@@ -32,10 +32,11 @@ const Navbar = () => {
     const commonLinks = [
         { name: 'Learning Hub', path: '/learning' },
         { name: 'Governance', path: '/governance' },
+        {name: 'Escrow', path: '/escrow'},
     ];
 
     return (
-        <nav className="bg-black border-b border-gold/20">
+        <nav className="bg-[#1a1a1a] border-b border-gold/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Left section */}

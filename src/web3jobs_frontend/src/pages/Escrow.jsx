@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Clock, CheckCircle, AlertTriangle, ArrowRight, Lock, HandCoins } from 'lucide-react';
+import { Shield, Clock, CheckCircle, AlertTriangle, ArrowRight, Lock, HandCoins, Users } from 'lucide-react';
 
 const escrowContracts = [
   {

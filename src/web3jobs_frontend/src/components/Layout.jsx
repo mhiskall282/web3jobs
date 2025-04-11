@@ -20,7 +20,7 @@ const Layout = () => {
 
   // Otherwise, render the full layout with Navbar, Outlet, and Footer
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white">
+    <div className="min-h-screen flex flex-col bg-[#1a1a1a] text-white">
       <Navbar />
       <main className="flex-1">
         <Outlet />

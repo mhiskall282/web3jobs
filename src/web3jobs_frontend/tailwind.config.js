@@ -6,11 +6,15 @@ export default {
   ],
   theme: {
     extend: {
-       colors : {
+      colors : {
         gold: '#C5A357',
         earth: '#4A3B2A',
         accent: '#E94F2E',
-        darkBg: '#0A0A0A'
+        darkBg: '#1A1A1A'
+      },
+      fontFamily: {
+        sans: ['Graphik', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
       },
     },
   },

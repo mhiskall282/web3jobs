@@ -2,6 +2,7 @@ import React from 'react';
 
 const ProfileView = ({ profile }) => {
   if (!profile) return null;
+  console.log(profile);
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gold/20 p-6">

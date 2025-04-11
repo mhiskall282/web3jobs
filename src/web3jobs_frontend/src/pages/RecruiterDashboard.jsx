@@ -109,7 +109,7 @@ const RecruiterDashboard = () => {
   return (
     <div className="min-h-screen bg-black text-gold">
       {/* Enhanced Navigation */}
-      <nav className="bg-gray-900 border-b border-gold/20 py-4">
+      {/* <nav className="bg-gray-900 border-b border-gold/20 py-4">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <Link to="/" className="text-xl font-bold bg-gradient-to-r from-gold to-orange-500 bg-clip-text text-transparent">
             AfroTalent
@@ -132,7 +132,7 @@ const RecruiterDashboard = () => {
             </button>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Stats Grid */}
