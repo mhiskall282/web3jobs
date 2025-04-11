@@ -258,7 +258,7 @@ const ProfileCreation = () => {
           </div>
         )}
 
-        <div className="bg-white rounded-xl shadow-md p-6">
+        <div className="bg-[#1a1a1a] rounded-xl shadow-md p-6">
           <div className="grid grid-cols-2 gap-4 mb-6">
             <button
               type="button"
@@ -271,12 +271,12 @@ const ProfileCreation = () => {
               }))}
               className={`p-4 rounded-lg border-2 ${
                 formData.role === 'freelancer' 
-                  ? 'border-indigo-500 bg-indigo-50'
+                  ? 'border-indigo-500 bg-gray-700'
                   : 'border-gray-200 hover:border-indigo-200'
               }`}
             >
               <h3 className="font-semibold">Freelancer</h3>
-              <p className="text-sm text-gray-600">Developer, Designer, Writer</p>
+              <p className="text-sm text-white">Developer, Designer, Writer</p>
             </button>
 
             <button
@@ -290,12 +290,12 @@ const ProfileCreation = () => {
               }))}
               className={`p-4 rounded-lg border-2 ${
                 formData.role === 'recruiter' 
-                  ? 'border-purple-500 bg-purple-50'
+                  ? 'border-purple-500 bg-gray-700'
                   : 'border-gray-200 hover:border-purple-200'
               }`}
             >
               <h3 className="font-semibold">Recruiter</h3>
-              <p className="text-sm text-gray-600">Hire Web3 Talent</p>
+              <p className="text-sm text-white">Hire Web3 Talent</p>
             </button>
           </div>
 
@@ -306,7 +306,7 @@ const ProfileCreation = () => {
                 name="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
               />
               {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
             </div>
@@ -318,7 +318,7 @@ const ProfileCreation = () => {
                 name="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
               />
               {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
             </div>
@@ -331,7 +331,7 @@ const ProfileCreation = () => {
                     placeholder="React, Motoko, UI/UX..."
                     value={formData.skills}
                     onChange={(e) => setFormData(prev => ({ ...prev, skills: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                   {errors.skills && <span className="text-red-500 text-sm">{errors.skills}</span>}
                 </div>
@@ -342,7 +342,7 @@ const ProfileCreation = () => {
                     type="url"
                     value={formData.portfolioLink}
                     onChange={(e) => setFormData(prev => ({ ...prev, portfolioLink: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                   {errors.portfolioLink && (
                     <span className="text-red-500 text-sm">{errors.portfolioLink}</span>
@@ -357,7 +357,7 @@ const ProfileCreation = () => {
                     step="0.1"
                     value={formData.hourlyRate}
                     onChange={(e) => setFormData(prev => ({ ...prev, hourlyRate: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                   {errors.hourlyRate && (
                     <span className="text-red-500 text-sm">{errors.hourlyRate}</span>
@@ -373,7 +373,7 @@ const ProfileCreation = () => {
                   <input
                     value={formData.companyName}
                     onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                   {errors.companyName && (
                     <span className="text-red-500 text-sm">{errors.companyName}</span>
@@ -386,7 +386,7 @@ const ProfileCreation = () => {
                     type="url"
                     value={formData.companyWebsite}
                     onChange={(e) => setFormData(prev => ({ ...prev, companyWebsite: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                 </div>
 
@@ -398,7 +398,7 @@ const ProfileCreation = () => {
                     step="0.1"
                     value={formData.hiringBudget}
                     onChange={(e) => setFormData(prev => ({ ...prev, hiringBudget: e.target.value }))}
-                    className="w-full p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
                   />
                   {errors.hiringBudget && (
                     <span className="text-red-500 text-sm">{errors.hiringBudget}</span>
@@ -413,7 +413,7 @@ const ProfileCreation = () => {
                 rows="4"
                 value={formData.bio}
                 onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-lg bg-[#1a1a1a] text-white"
               />
               {errors.bio && <span className="text-red-500 text-sm">{errors.bio}</span>}
             </div>
